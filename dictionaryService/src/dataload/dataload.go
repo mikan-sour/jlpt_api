@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/jedzeins/jlpt_api/src/models"
+	"github.com/jedzeins/jlpt_api/dictionaryService/src/models"
 	_ "github.com/lib/pq"
 )
 
@@ -35,14 +35,17 @@ func onFailure(DB *sql.DB, warn string, err error) {
 
 }
 
-func Dataload(app *models.App) {
+func Dataload(app models.App) {
 
 	fmt.Println("CREATING TABLE")
 	_, err := app.DB.Exec(
-		"CREATE TABLE words (id SERIAL PRIMARY KEY,foreign1 VARCHAR(255) NOT NULL, foreign2 VARCHAR(255) NOT NULL,definitions TEXT NOT NULL,level  VARCHAR(255) NOT NULL)")
+		"CREATE TABLE IF NOT EXISTS words (id SERIAL PRIMARY KEY,foreign1 VARCHAR(255) NOT NULL, foreign2 VARCHAR(255) NOT NULL,definitions TEXT NOT NULL,level  VARCHAR(255) NOT NULL)")
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		// log.Fatal(err)
+		fmt.Println("skip the dataload, the table exists")
+		return
 	}
 
 	for _, csvFile := range CSVs {

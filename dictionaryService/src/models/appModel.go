@@ -4,12 +4,14 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 
 	_ "github.com/lib/pq"
 )
 
 type App struct {
-	DB *sql.DB
+	DB     *sql.DB
+	Router *http.Server
 }
 
 var (
@@ -36,8 +38,6 @@ func (app *App) Initialize() error {
 	}
 
 	fmt.Println("DB CONNECTED")
-
-	// app.Router = createRouter(app)
 
 	return err
 }
