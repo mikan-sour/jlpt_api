@@ -15,7 +15,7 @@ const port = ":8080"
 func makeRouter(app models.App) {
 
 	http.HandleFunc("/health", controllers.HealthCheck)
-	http.HandleFunc("/vocab", controllers.GetVocabWords)
+	http.HandleFunc("/vocab/level/", controllers.GetVocabWordsByLevel)
 
 	app.Router = &http.Server{
 		Addr:           port,

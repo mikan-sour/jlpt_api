@@ -1,28 +1,23 @@
 package repository
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/jedzeins/jlpt_api/dictionaryService/src/database"
 	"github.com/jedzeins/jlpt_api/dictionaryService/src/models"
 )
 
-func DbGetWords(level string, limit int, offset int) (*[]models.VocabWordRes, error) {
+func DbGetWordsByLevel(level string, limit int, offset int) (*[]models.VocabWordRes, error) {
 
 	rows, err := database.DB.Query(
 		"SELECT * FROM words WHERE level = $1 ORDER BY id LIMIT $2 OFFSET $3",
 		level, limit, offset)
-
-	// rows, err := database.DB.Query("SELECT * FROM words WHERE level = 'JLPT N-4' ORDER BY id LIMIT 10 OFFSET 1")
 
 	if err != nil {
 		return nil, err
 	}
 
 	defer rows.Close()
-
-	fmt.Println(rows.Next())
 
 	words := []models.VocabWordRes{}
 
