@@ -15,6 +15,7 @@ const port = ":8080"
 func makeRouter(app models.App) {
 
 	http.HandleFunc("/health", controllers.HealthCheck)
+	http.HandleFunc("/vocab", controllers.GetVocabWords)
 
 	app.Router = &http.Server{
 		Addr:           port,
@@ -24,7 +25,7 @@ func makeRouter(app models.App) {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	fmt.Printf("SERVING ON PORT %s", port)
+	fmt.Println("SERVING ON PORT " + port)
 	log.Fatal(app.Router.ListenAndServe())
 
 }

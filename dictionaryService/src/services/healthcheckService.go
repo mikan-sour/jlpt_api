@@ -1,4 +1,4 @@
-package healthcheckService
+package services
 
 import (
 	"time"

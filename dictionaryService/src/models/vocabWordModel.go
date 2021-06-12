@@ -1,6 +1,8 @@
 package models
 
-import "database/sql"
+import (
+	"database/sql"
+)
 
 type VocabWord struct {
 	ID          int
@@ -11,11 +13,11 @@ type VocabWord struct {
 }
 
 type VocabWordRes struct {
-	ID          int
-	Foreign1    string
-	Foreign2    string
-	Definitions []string
-	Level       string
+	ID          int      `json:"id"`
+	Foreign1    string   `json:"foreign1"`
+	Foreign2    string   `json:"foreign2"`
+	Definitions []string `json:"definitions"`
+	Level       string   `json:"level"`
 }
 
 func (p *VocabWord) DbCreateWord(db *sql.DB) error {

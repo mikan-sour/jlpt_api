@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/jedzeins/jlpt_api/dictionaryService/src/database"
 	"github.com/jedzeins/jlpt_api/dictionaryService/src/models"
 	_ "github.com/lib/pq"
 )
@@ -28,17 +29,15 @@ var CSVs = []string{
 }
 
 func onFailure(DB *sql.DB, warn string, err error) {
-
 	if err != nil {
 		log.Fatal(warn+"\n", err)
 	}
-
 }
 
-func Dataload(app models.App) {
+func Dataload() {
 
 	fmt.Println("CREATING TABLE")
-	_, err := app.DB.Exec(
+	_, err := database.DB.Exec(
 		"CREATE TABLE IF NOT EXISTS words (id SERIAL PRIMARY KEY,foreign1 VARCHAR(255) NOT NULL, foreign2 VARCHAR(255) NOT NULL,definitions TEXT NOT NULL,level  VARCHAR(255) NOT NULL)")
 
 	if err != nil {
@@ -50,7 +49,7 @@ func Dataload(app models.App) {
 
 	for _, csvFile := range CSVs {
 		openFile, err := os.Open(csvFile)
-		onFailure(app.DB, "Error opening file", err)
+		onFailure(database.DB, "Error opening file", err)
 
 		r := csv.NewReader(openFile)
 		r.LazyQuotes = true
@@ -73,12 +72,10 @@ func Dataload(app models.App) {
 					Level:       record[3],
 				}
 
-				word.DbCreateWord(app.DB)
+				word.DbCreateWord(database.DB)
 			}
-
 		}
-
 	}
 
-	fmt.Println("SUCCESSFUL INITIAL DB MIGRATION")
+	fmt.Println("SUCCESSFUL INITIAL DB LOAD")
 }
