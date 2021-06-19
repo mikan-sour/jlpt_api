@@ -1,48 +1,53 @@
 package repository
 
 import (
-	"strings"
+	"database/sql"
+	"fmt"
 
 	"github.com/jedzeins/jlpt_api/dictionaryService/src/database"
-	"github.com/jedzeins/jlpt_api/dictionaryService/src/models"
 )
 
-func DbGetWordsByLevel(level string, limit int, offset int) (*[]models.VocabWordRes, error) {
+var LevelPlaceholder = "JLPT N-0"
 
-	rows, err := database.DB.Query(
-		"SELECT * FROM words WHERE level = $1 ORDER BY id LIMIT $2 OFFSET $3",
-		level, limit, offset)
+func makeQueryString(level string, text string, limit int, offset int) (string, error) { // Need to make an error...
+	var queryStringAltogether string
+	queryStringRoot := fmt.Sprint("SELECT * FROM words WHERE 1=1")
+	queryStringLevel := fmt.Sprintf(" AND level = '%s'", level)
+	queryStringText := fmt.Sprintf(` AND(
+		to_tsvector(foreign1) @@ to_tsquery('%s') OR
+		to_tsvector(foreign2) @@ to_tsquery('%s') OR
+		to_tsvector(definitions) @@ to_tsquery('%s')
+	)`, text, text, text)
+
+	queryStringLimitOffset := fmt.Sprintf(" ORDER BY id LIMIT %v OFFSET %v", limit, offset)
+
+	queryStringAltogether += queryStringRoot
+
+	if level != "" && level != LevelPlaceholder {
+		queryStringAltogether += queryStringLevel
+	}
+
+	if text != "" {
+		queryStringAltogether += queryStringText
+	}
+
+	queryStringAltogether += queryStringLimitOffset
+
+	return queryStringAltogether, nil
+
+}
+
+func DoQuery(level string, text string, limit int, offset int) (*sql.Rows, error) {
+	query, err := makeQueryString(level, text, limit, offset)
+	if err != nil {
+		panic(err) // handle this!
+	}
+
+	rows, err := database.DB.Query(query)
 
 	if err != nil {
 		return nil, err
 	}
 
-	defer rows.Close()
-
-	words := []models.VocabWordRes{}
-
-	for rows.Next() {
-		var (
-			p      models.VocabWordRes
-			defs   string
-			holder []string
-		)
-
-		if err := rows.Scan(&p.ID, &p.Foreign1, &p.Foreign2, &defs, &p.Level); err != nil {
-			return nil, err
-		}
-
-		if strings.Contains(defs, ";") {
-			holder = strings.Split(defs, ";")
-			for _, i := range holder {
-				p.Definitions = append(p.Definitions, strings.TrimSpace(i))
-			}
-		} else {
-			p.Definitions = append(p.Definitions, defs)
-		}
-
-		words = append(words, p)
-	}
-
-	return &words, nil
+	return rows, err
 }

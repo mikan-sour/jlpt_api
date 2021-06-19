@@ -20,6 +20,14 @@ type VocabWordRes struct {
 	Level       string   `json:"level"`
 }
 
+type VocabWordResByLevel struct {
+	JLPTN1 []VocabWordRes `json:"jlptN1`
+	JLPTN2 []VocabWordRes `json:"jlptN2`
+	JLPTN3 []VocabWordRes `json:"jlptN3`
+	JLPTN4 []VocabWordRes `json:"jlptN4`
+	JLPTN5 []VocabWordRes `json:"jlptN5`
+}
+
 func (p *VocabWord) DbCreateWord(db *sql.DB) error {
 	err := db.QueryRow(
 		"INSERT INTO words(foreign1,foreign2,definitions,level) VALUES($1, $2, $3, $4) RETURNING id",
