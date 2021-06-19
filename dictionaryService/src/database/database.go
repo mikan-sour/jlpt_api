@@ -4,23 +4,24 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 )
 
 var (
-	host     = "localhost"
-	port     = 5433
-	user     = "postgres"
-	password = "password"
-	DB       *sql.DB
+	host         = "database" // if using docker compose, should be name of service, else "localhost"
+	port         = 5432
+	user         = "postgres"
+	password     = "password"
+	databaseName = "postgres"
+	DB           *sql.DB
 )
 
 func Initialize() error {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s  sslmode=disable",
-		host, port, user, password)
+	time.Sleep(3 * time.Second)
+	dns := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, databaseName)
 
 	var err error
-	DB, err = sql.Open("postgres", psqlInfo)
+	DB, err = sql.Open("postgres", dns)
 	if err != nil {
 		panic(err)
 	}

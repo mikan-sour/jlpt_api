@@ -1,0 +1,19 @@
+version: "2"
+services:
+    dict-service:
+        depends_on: 
+            - database
+        container_name: dictionary_service
+        build: .
+        ports:
+            - "8080:8080"
+        
+    database:
+        container_name: dictionary_postgres
+        image: postgres
+        ports:
+            - "5432:5432"
+        environment: 
+        - POSTGRES_PASSWORD=password
+        - POSTGRES_USER=postgres
+       
