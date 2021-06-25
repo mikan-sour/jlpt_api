@@ -3,9 +3,9 @@ package app
 import (
 	"log"
 
-	"github.com/jedzeins/jlpt_api/dictionaryService/src/models"
 	"github.com/jedzeins/jlpt_api/setsService/src/database"
 	"github.com/jedzeins/jlpt_api/setsService/src/dataload"
+	"github.com/jedzeins/jlpt_api/setsService/src/models"
 )
 
 var App = models.App{}

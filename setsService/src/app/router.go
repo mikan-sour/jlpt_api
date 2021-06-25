@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jedzeins/jlpt_api/setService/src/controllers"
-	"github.com/jedzeins/jlpt_api/setService/src/models"
+	"github.com/jedzeins/jlpt_api/setsService/src/controllers"
+	"github.com/jedzeins/jlpt_api/setsService/src/models"
 )
 
 const port = ":8081"
 
 func makeRouter(app models.App) {
 
-	http.HandleFunc("/healthcheck", controllers.Healthcheck)
+	http.HandleFunc("/healthcheck", controllers.HealthCheck)
 
 	app.Router = &http.Server{
 		Addr:           port,
