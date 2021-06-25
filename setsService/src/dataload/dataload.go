@@ -5,9 +5,33 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/jedzeins/jlpt_api/setService/src/database"
+	"github.com/jedzeins/jlpt_api/setsService/src/database"
 	"github.com/jedzeins/jlpt_api/setsService/src/models"
+	"go.mongodb.org/mongo-driver/bson"
 )
+
+func CheckIfDataExists() (bool, error) {
+	var sets []models.Set
+
+	cur, err := database.Collection.Find(database.Ctx, bson.D{})
+
+	if err != nil {
+		panic(err)
+	}
+	defer cur.Close(database.Ctx)
+
+	if err := cur.All(database.Ctx, &sets); err != nil {
+		panic(err)
+	}
+
+	if len(sets) == 0 {
+		fmt.Println("No data, doing data load of sets")
+		return false, nil
+	}
+
+	fmt.Println("Data already loaded")
+	return true, nil
+}
 
 func DoDataload() error {
 
@@ -16,18 +40,16 @@ func DoDataload() error {
 		fmt.Println(err)
 		return err
 	}
-	// fmt.Println("data:  ", string(data))
 
-	var toBeLoaded []models.Set
+	var toBeLoaded []interface{}
 
 	err = json.Unmarshal(data, &toBeLoaded)
 	if err != nil {
 		fmt.Println(err)
 		return err
 	}
-	// fmt.Printf("slice: %q\n", toBeLoaded)
 
-	err = database.Collection.Insert(toBeLoaded)
+	_, err = database.Collection.InsertMany(database.Ctx, toBeLoaded)
 	if err != nil {
 		fmt.Println(err)
 		return err

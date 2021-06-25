@@ -27,6 +27,7 @@ func ConnectMongo() error {
 	}
 
 	Collection = client.Database("setServiceMongo").Collection("sets")
+
 	fmt.Println("Safely connected to MongoDB")
 
 	return nil

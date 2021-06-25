@@ -2,8 +2,7 @@ package models
 
 import (
 	"net/http"
-
-	_ "github.com/lib/pq"
+	// _ "github.com/lib/pq"
 )
 
 type App struct {

@@ -14,4 +14,5 @@ type Set struct {
 	Owner    string             `json:"owner,omitempty" bson:"owner,omitempty"`
 	SetName  string             `json:"setName,omitempty" bson:"setName,omitempty"`
 	SetWords []int              `json:"setWords,omitempty" bson:"setWords,omitempty"`
+	IsPublic bool               `json:"isPublic,omitempty" bson:"isPublic,omitempty"`
 }
