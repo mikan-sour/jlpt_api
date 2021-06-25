@@ -1,0 +1,17 @@
+[
+    {
+        "owner":"Jed",
+        "setName":"JLPT N-1 1",
+        "setWords": [1,2,3,4,5,6,7,8]
+    },
+    {
+        "owner":"Jed",
+        "setName":"JLPT N-1 2",
+        "setWords": [9,15,18,22,24,44,78]
+    },
+    {
+        "owner":"Jed",
+        "setName":"JLPT N-1 3",
+        "setWords": [4,8,15,16,23,42]
+    }
+]
