@@ -15,6 +15,7 @@ const port = ":8081"
 func makeRouter(app models.App) {
 
 	http.HandleFunc("/healthcheck", controllers.HealthCheck)
+	http.HandleFunc("/sets", controllers.QuerySets)
 
 	app.Router = &http.Server{
 		Addr:           port,

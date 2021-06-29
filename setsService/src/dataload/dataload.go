@@ -1,13 +1,16 @@
 package dataload
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 
 	"github.com/jedzeins/jlpt_api/setsService/src/database"
 	"github.com/jedzeins/jlpt_api/setsService/src/models"
+
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func CheckIfDataExists() (bool, error) {
@@ -53,6 +56,13 @@ func DoDataload() error {
 	if err != nil {
 		fmt.Println(err)
 		return err
+	}
+
+	index := mongo.IndexModel{Keys: bson.M{"setName": "text"}, Options: nil}
+
+	_, err = database.Collection.Indexes().CreateOne(context.Background(), index)
+	if err != nil {
+		panic(err)
 	}
 
 	return nil

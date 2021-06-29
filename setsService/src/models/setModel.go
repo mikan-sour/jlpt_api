@@ -10,9 +10,9 @@ import (
 // }
 
 type Set struct {
-	ID       primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Owner    string             `json:"owner,omitempty" bson:"owner,omitempty"`
-	SetName  string             `json:"setName,omitempty" bson:"setName,omitempty"`
-	SetWords []int              `json:"setWords,omitempty" bson:"setWords,omitempty"`
-	IsPublic bool               `json:"isPublic,omitempty" bson:"isPublic,omitempty"`
+	ID       primitive.ObjectID `json:"_id" bson:"_id"`
+	Owner    string             `json:"owner" bson:"owner"`
+	SetName  string             `json:"setName" bson:"setName"`
+	SetWords []int              `json:"setWords" bson:"setWords"`
+	IsPublic bool               `json:"isPublic" bson:"isPublic"`
 }

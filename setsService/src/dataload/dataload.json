@@ -13,19 +13,19 @@
     },
     {
         "owner":"Jed",
-        "setName":"JLPT N-1 3",
+        "setName":"midterm",
         "setWords": [4,8,15,16,23,42],
         "isPublic":false
     },
     {
         "owner":"Claude",
-        "setName":"JLPT N-5 1",
+        "setName":"beginner stuff",
         "setWords": [4000,8000,150,160,2300,4200],
         "isPublic":true
     },
     {
         "owner":"Molly",
-        "setName":"JLPT N-4 1",
+        "setName":"Menu words",
         "setWords": [100,101,102,103,104,105],
         "isPublic":false
     }
