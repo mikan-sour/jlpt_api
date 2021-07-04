@@ -2,10 +2,24 @@ package utils
 
 import (
 	"net/url"
+	"reflect"
 	"strconv"
 
 	"github.com/jedzeins/jlpt_api/setsService/src/models"
+	"gopkg.in/mgo.v2/bson"
 )
+
+func ParseSetUrlId(reqURL *url.URL) (*models.SetRequestById, *models.SetRequestParamsError) {
+
+	encodedId := reqURL.Query().Get("id")
+	decodedId, err := url.QueryUnescape(encodedId)
+	if err != nil {
+		return nil, &models.SetRequestParamsError{ErrorMessage: "issue decoding the ID"}
+	}
+
+	return &models.SetRequestById{Id: decodedId}, nil
+
+}
 
 func ParseSetUrlCheckStrings(reqURL *url.URL) (*models.SetRequestParamsUnParsed, *models.SetRequestParamsError) {
 
@@ -68,6 +82,28 @@ func ParseSetUrlCheckStrings(reqURL *url.URL) (*models.SetRequestParamsUnParsed,
 	}
 
 	return &params, nil
+}
+
+func SetToBson(set *models.Set) (bson.M, error) {
+	queryObject := bson.M{}
+
+	v := reflect.ValueOf(*set)
+	typeOfURLParams := v.Type()
+	for i := 0; i < v.NumField(); i++ {
+
+		name := LowerCaseString(typeOfURLParams.Field(i).Name)
+		val := v.Field(i).Interface()
+
+		if name == "iD" {
+			continue
+		}
+
+		queryObject[name] = val
+
+	}
+
+	return queryObject, nil
+
 }
 
 // func ParseSetUrl(reqURL *url.URL) (*models.SetRequestParams, *models.SetRequestParamsError) {

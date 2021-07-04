@@ -8,7 +8,7 @@ import (
 	"github.com/jedzeins/jlpt_api/setsService/src/models"
 	"github.com/jedzeins/jlpt_api/setsService/src/utils"
 
-	// "go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -36,10 +36,7 @@ func makeBSONQuery(urlParams *models.SetRequestParamsUnParsed) (bson.M, error) {
 			}
 			if name == "setName" {
 				queryObject["$text"] = bson.M{"$search": val}
-			} else {
-				continue // catch all.
 			}
-
 		}
 	}
 
@@ -79,4 +76,56 @@ func GetSets(urlParams *models.SetRequestParamsUnParsed) (*[]models.Set, error) 
 	}
 
 	return &responseSets, nil
+}
+
+func GetSetById(id string) (*models.Set, error) {
+
+	queryObject := bson.M{"_id": ""}
+
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Invalid id")
+		return nil, err
+	}
+
+	queryObject["_id"] = objectId
+	resultSet := models.Set{}
+
+	if err = database.Collection.FindOne(database.Ctx, queryObject).Decode(&resultSet); err != nil {
+		return nil, err
+	}
+
+	return &resultSet, nil
+}
+
+func DeleteSetById(id string) error {
+	queryObject := bson.M{"_id": ""}
+
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Invalid id")
+		return err
+	}
+
+	queryObject["_id"] = objectId
+
+	_, err = database.Collection.DeleteOne(database.Ctx, queryObject)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func PostNewSet(bsonSet bson.M) (*primitive.ObjectID, error) {
+
+	res, err := database.Collection.InsertOne(database.Ctx, bsonSet)
+	if err != nil {
+		return nil, err
+	}
+
+	id := res.InsertedID.(primitive.ObjectID)
+
+	return &id, nil
 }

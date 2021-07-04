@@ -10,7 +10,7 @@ import (
 // }
 
 type Set struct {
-	ID       primitive.ObjectID `json:"_id" bson:"_id"`
+	ID       primitive.ObjectID `json:"_id" bson:"_id" omitempty`
 	Owner    string             `json:"owner" bson:"owner"`
 	SetName  string             `json:"setName" bson:"setName"`
 	SetWords []int              `json:"setWords" bson:"setWords"`

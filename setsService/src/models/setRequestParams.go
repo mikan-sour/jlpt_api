@@ -1,5 +1,9 @@
 package models
 
+type SetRequestById struct {
+	Id string `omitempty`
+}
+
 type SetRequestParamsUnParsed struct {
 	IsPublic string `omitempty`
 	IsMine   string `omitempty`
