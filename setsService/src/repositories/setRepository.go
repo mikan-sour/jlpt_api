@@ -129,3 +129,27 @@ func PostNewSet(bsonSet bson.M) (*primitive.ObjectID, error) {
 
 	return &id, nil
 }
+
+func UpdateSet(bsonSet bson.M, id string) error {
+
+	queryObject := bson.M{"_id": ""}
+
+	update := bson.M{"$set": bsonSet}
+
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Invalid id")
+		return err
+	}
+
+	queryObject["_id"] = objectId
+
+	_, err = database.Collection.UpdateOne(database.Ctx, queryObject, update)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}

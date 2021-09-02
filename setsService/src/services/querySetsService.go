@@ -7,6 +7,7 @@ import (
 	"github.com/jedzeins/jlpt_api/setsService/src/models"
 	"github.com/jedzeins/jlpt_api/setsService/src/repositories"
 	"github.com/jedzeins/jlpt_api/setsService/src/utils"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func QuerySetsService(urlParams *models.SetRequestParamsUnParsed) (*models.SetResponse, *models.ApiError) {
@@ -54,4 +55,27 @@ func PostNewSet(set models.Set) (*models.Set, *models.ApiError) {
 	set.ID = *res
 
 	return &set, nil
+}
+
+func PatchSetById(id string, set models.Set) (*models.Set, *models.ApiError) {
+
+	bsonSet, err := utils.SetToBson(&set)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = repositories.UpdateSet(bsonSet, id)
+	if err != nil {
+		return nil, &models.ApiError{ErrorMessage: err.Error()}
+	}
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	set.ID = objID
+
+	return &set, nil
+
 }

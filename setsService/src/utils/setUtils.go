@@ -26,6 +26,14 @@ func ParseSetUrlCheckStrings(reqURL *url.URL) (*models.SetRequestParamsUnParsed,
 	var params models.SetRequestParamsUnParsed
 	var paramsError models.SetRequestParamsError
 
+	encodedId := reqURL.Query().Get("id")
+	decodedId, err := url.QueryUnescape(encodedId)
+	if err != nil {
+		return nil, &models.SetRequestParamsError{ErrorMessage: "issue decoding the ID"}
+	}
+
+	params.Id = decodedId
+
 	encodedSetName := reqURL.Query().Get("setName")
 	decodedSetName, err := url.QueryUnescape(encodedSetName)
 	if err != nil {

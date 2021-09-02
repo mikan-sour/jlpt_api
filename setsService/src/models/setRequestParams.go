@@ -5,6 +5,7 @@ type SetRequestById struct {
 }
 
 type SetRequestParamsUnParsed struct {
+	Id       string `omitempty`
 	IsPublic string `omitempty`
 	IsMine   string `omitempty`
 	Limit    string `omitempty`
@@ -13,6 +14,7 @@ type SetRequestParamsUnParsed struct {
 }
 
 type SetRequestParams struct {
+	Id       string `omitempty`
 	IsPublic bool   `omitempty`
 	IsMine   bool   `omitempty`
 	Limit    int    `omitempty`
