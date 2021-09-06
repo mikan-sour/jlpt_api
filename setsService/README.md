@@ -14,10 +14,11 @@ returns API status
 #### Sets (/sets):
 
 ##### Accepts
-- Get 
-- Post
+- Get: returns an array of available sets matching parameters
+- Post: create a new set
+- Delete: delete a set
+- Patch: update a set
 
-returns an array of available sets 
 
 ##### QueryParams
 - isPublic (bool)
@@ -34,6 +35,8 @@ the IDs of the cards will be requested via a different route
 - name (string)
 - isPublic (bool)
 
+#### Sets by ID (/setsById?id=<id>)
+
 #### Words in Set (/sets/<setID>)
 returns the array of ints that represent the words belonging to a set
 
@@ -42,19 +45,15 @@ Array of ints (this could change if we implement an object for the word object)
 
 ####
 
-
-# OLD
-Not using Cassandra because it doesn't make sense for the service (Use the right tools for the job!)
-
 ## The database
-We're using Cassandra because I thought it might be fun to try
+We're using MongoDB because I wanted to represent the set as an array in the DB
 
 ### Running the database in Docker
 1. Run image
 ```docker run --name jlpt-mongodb -p 27017:27017 -d mongo```
 2. Open in ternminal
 ```docker exec -it jlpt-mongodb bash```
-3. Open cassandra
+3. Open mongo in the terminal in the container
 ```mongo```
 
 

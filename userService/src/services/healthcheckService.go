@@ -3,7 +3,7 @@ package services
 import (
 	"time"
 
-	"github.com/jedzeins/jlpt_api/dictionaryService/src/models"
+	"github.com/jedzeins/jlpt_api/userService/src/models"
 )
 
 func HealthcheckService() models.HealthCheck {
@@ -11,7 +11,7 @@ func HealthcheckService() models.HealthCheck {
 	tm := time.Unix(t, 0)
 
 	return models.HealthCheck{
-		Status: "Dictionary Service is Good! 順調している！",
+		Status: "User Service is Good! 順調している！",
 		Time:   tm,
 	}
 }
