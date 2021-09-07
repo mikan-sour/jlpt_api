@@ -13,7 +13,7 @@ var (
 	secret2 = []byte("<MnbgyUIJKmnhy&*IK")
 )
 
-func GenerateSignedTokens(ownerId int, sessionId int) (string, string, *models.ApiError) {
+func GenerateSignedTokens(ownerId string, sessionId string) (string, string, *models.ApiError) {
 
 	expTime := time.Now().Add(time.Hour * 24 * 7).Unix()
 

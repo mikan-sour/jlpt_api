@@ -5,8 +5,9 @@ import (
 	"github.com/jedzeins/jlpt_api/userService/src/models"
 )
 
-func RegisterSession(ownerId int) (*models.Session, *models.ApiError) {
-	s := models.Session{ID: ownerId}
+func RegisterSession(ownerId string) (*models.Session, *models.ApiError) {
+
+	s := models.Session{OwnerId: ownerId}
 
 	// should this be with a repo? probably
 	session, err := s.CreateSession(database.DB)

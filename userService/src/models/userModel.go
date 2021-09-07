@@ -1,15 +1,19 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // this is used to get the user from the DB
+// Also returned to the client
 
 type User struct {
-	ID           int       `json:"id"`
+	ID           string    `json:"id"`
 	Username     string    `json:"username"`
 	IsAdmin      bool      `json:"isAdmin"`
 	Active       bool      `json:"active"`
-	CreatedDate  time.Time `json:"createdDate"`
-	LastLogin    time.Time `json:"lastLogin"`
-	ModifiedDate time.Time `json:"modifiedDate"`
+	CreatedDate  time.Time `json:"createdDate,omitempty"`
+	LastLogin    time.Time `json:"lastLogin,omitempty"`
+	ModifiedDate time.Time `json:"modifiedDate,omitempty"`
+	AccessToken  string    `json:"accessToken,omitempty"`
 }

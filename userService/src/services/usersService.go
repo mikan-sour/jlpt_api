@@ -3,13 +3,13 @@ package services
 import (
 	"errors"
 
-	"github.com/jedzeins/jlpt_api/userService/src/app/utils"
 	"github.com/jedzeins/jlpt_api/userService/src/database"
 	"github.com/jedzeins/jlpt_api/userService/src/models"
 	"github.com/jedzeins/jlpt_api/userService/src/repositories"
+	"github.com/jedzeins/jlpt_api/userService/src/utils"
 )
 
-func RegisterUser(creds models.Credentials) (*models.User, *models.ApiError) {
+func RegisterUser(creds models.CredentialsPost) (*models.User, *models.ApiError) {
 	// check length of username and pw
 
 	if len(creds.Username) < 6 || len(creds.Username) > 20 {

@@ -22,7 +22,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 	// get username and pw from json
 	decoder := json.NewDecoder(r.Body)
-	var credentials models.Credentials
+	var credentials models.CredentialsPost
 	decodeErr := decoder.Decode(&credentials)
 
 	if decodeErr != nil {
@@ -67,12 +67,15 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	// set refresh token as cookie
 	utils.SetRefreshTokenCookie(refreshToken, w)
 
+	// add access token to response
+	user.AccessToken = accessToken
+
 	// response
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(accessToken))
-	// json.NewEncoder(w).Encode(user)
+	// w.Write([]byte(accessToken))
+	json.NewEncoder(w).Encode(user)
 
 	return
 
