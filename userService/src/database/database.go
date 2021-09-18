@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jedzeins/jlpt_api/userService/src/repositories"
 	_ "github.com/lib/pq"
 )
 
@@ -33,20 +32,20 @@ func Initialize() error {
 		panic(err)
 	}
 
-	// create table for users
+	// // create table for users
 
-	err = repositories.InitUsersTable(DB)
+	// err = repositories.InitUsersTable(DB)
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
 
-	// create table for sessions
-	err = repositories.InitSessionsTable(DB)
+	// // create table for sessions
+	// err = repositories.InitSessionsTable(DB)
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
 
 	return err
 }
