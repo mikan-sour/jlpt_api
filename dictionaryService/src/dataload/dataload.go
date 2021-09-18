@@ -63,7 +63,8 @@ func Dataload() {
 
 		for i, record := range fileData {
 			if i == 0 {
-				fmt.Println("SKIPPING HEADER")
+				// fmt.Println("SKIPPING HEADER")
+				continue
 			} else {
 				word := models.VocabWord{
 					Foreign1:    record[0],

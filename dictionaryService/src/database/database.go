@@ -3,7 +3,6 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -39,13 +38,16 @@ func Initialize() error {
 func CheckDB() bool {
 	var (
 		err    error
-		exists bool
+		exists = true
+		id     int8
 	)
 
-	err = DB.QueryRow("SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_schema = $1 AND table_name = $2);", "public", "words").Scan(&exists)
+	// err = DB.QueryRow("SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_schema = $1 AND table_name = $2);", "public", "words").Scan(&exists)
 
-	if err != nil {
-		log.Fatal(err)
+	err = DB.QueryRow("SELECT id FROM words WHERE id = 1").Scan(&id)
+
+	if err != nil || id != 1 {
+		exists = false
 	}
 
 	return exists
